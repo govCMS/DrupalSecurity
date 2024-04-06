@@ -1,4 +1,4 @@
-# Change Log for PHPCSUtils for PHP CodeSniffer
+# Change Log for drupal-spider/drupalsecurity
 
 All notable changes to this project will be documented in this file.
 
