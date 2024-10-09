@@ -9,23 +9,43 @@ please use [ESLint](http://eslint.org/) and see the
 
 ## Global installation
 
-First, install phpcs:
+First, install composer if you haven't already:
 
-[PHP_CodeSniffe install](https://github.com/PHPCSStandards/PHP_CodeSniffer/?tab=readme-ov-file#installation)
+```shell
+brew install composer
+```
 
-To make the `phpcs` command available globally, add the Composer
-bin path to your `$PATH` variable in `~/.profile`, `~/.bashrc` or `~/.zshrc`:
+Then install with composer PHP_Codesniffer, PHPCSUtils, and Drupal Coder:
 
-    export PATH="$PATH:$HOME/.composer/vendor/bin"
+```shell 
+composer global require --dev drupal/coder 
+composer global require --dev phpcsstandards/phpcsutils
+```
 
-Second, install PHPCS plugins:
-[Drupal coder](https://github.com/drupalprojects/coder#installation)
-[PHPCSUtils](https://github.com/PHPCSStandards/PHPCSUtils)
+Next, make the `phpcs` command globally available. Assuming you are running zsh:
 
-Last, download the DrupalSecurity folder to your local
+```shell
+echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.zshrc
+zsh # Reload shell so phpcs is immediately available
+```
+
+Clone this repository to a location of your choice. Once you have done this, save the path to a variable:
+
+```shell
+DS_PATH=/path/to/DrupalSecurity
+```
+
+Then add this repository to PHPCS's set of available standards:
+
+```shell
+ORIG_PATHS=$(phpcs --config-show | sed -n 's/^installed_paths: //p')
+phpcs --config-set installed_paths ${ORIG_PATHS},${DS_PATH}
+```
+
+If it is installed correctly, `DrupalSecurity` should appear in the list of standards when running `phpcs -i`.
 
 ## Usage
 
 Check Drupal Security standards
 
-    phpcs --standard=/path/to/DrupalSecurity --extensions=php,module,inc,install,theme,yml,twig /file/to/drupal/module
+    phpcs --standard=DrupalSecurity --extensions=php,module,inc,install,theme,yml,twig /path/to/drupal/module
